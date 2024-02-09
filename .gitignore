@@ -5,3 +5,5 @@
 *.log
 *.ind
 *.toc
+
+*synctex.gz
