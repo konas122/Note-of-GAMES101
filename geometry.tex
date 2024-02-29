@@ -13,6 +13,7 @@
 	\item 分型 (Fractals) 表示, 指的是一个图形的一部分和自己整体相比高度相似, 可以理解为一种递归的形式. 
 \end{enumerate}
 
+\vspace{\baselineskip}
 \section{显式几何}
 显式几何通过直接定义几何上的点或者通过把点进行参数映射的方式定义到新的空间 (例如我们可以把$u-v$平面上的点映射到三维空间中) . 显式几何可以轻松的找到所有的点, 但是不好判断空间中任何一个点是否在图形面上. 显式几何常见的表示方式有以下几种: 
 \begin{enumerate}
@@ -83,11 +84,11 @@
 
 对于逐段的贝塞尔曲线, 我们需要保证其连续性, 我们对连续性有以下定义: 
 \begin{itemize}
-	\item 如果两条分段曲线的起点和终点重合, 那么称为C0连接; 
-	\item 在上面的情况下, 如果第一条曲线终点的切线和第二条曲线起点的切线一样, 那么称为C1连接; 
-	\item 在上面的情况下, 如果这两个点的n阶导数相同, 那么称为Cn连接. 
+	\item 如果两条分段曲线的起点和终点重合, 那么称为$C0$连接; 
+	\item 在上面的情况下, 如果第一条曲线终点的切线和第二条曲线起点的切线一样, 那么称为$C1$连接; 
+	\item 在上面的情况下, 如果这两个点的$n$阶导数相同, 那么称为$Cn$连接. 
 \end{itemize}
-一边情况下C1连接就显得足够光滑. 在某些特殊情况下我们需要更高阶的连续. 
+一边情况下$C1$连接就显得足够光滑. 在某些特殊情况下我们需要更高阶的连续. 
 
 \subsection{样条曲线}
 \textbf{样条曲线 (Split Curve) }可以形象地理解为在定义了多个控制点后, 在这些控制点上固定一个有弹性的木条形成的曲线. 在任何一点上不论几阶导数都是连续的. 最常见的样条曲线称为B-样条 (Basis) . 
@@ -96,7 +97,7 @@
 我们可以通过曲线的定义扩展出\textbf{曲面 (Surface) }的定义. 
 
 \subsection{贝塞尔曲面}
-贝塞尔曲面的计算类似于双线性插值的过程. 我们使用$4\times 4$个点形成贝塞尔曲面. 首先, 我们在每一行生成4条贝塞尔曲线, 接下来在4条贝塞尔曲线上找到相同时刻对应的4个点生成一条新的贝塞尔曲线. 这些贝塞尔曲线的集合形成了贝塞尔曲面. 对于贝塞尔曲面, 我们需要两个变量$u,v$对其进行数学表示. 
+贝塞尔曲面的计算类似于双线性插值的过程. 我们使用$4\times 4$个点形成贝塞尔曲面. 首先, 我们在每一行生成$4$条贝塞尔曲线, 接下来在$4$条贝塞尔曲线上找到相同时刻对应的$4$个点生成一条新的贝塞尔曲线. 这些贝塞尔曲线的集合形成了贝塞尔曲面. 对于贝塞尔曲面, 我们需要两个变量$u,v$对其进行数学表示. 
 
 \chapter{网格操作}
 我们会对模型的网格进行一些操作来达到我们使用的目的. 基本的操作包括网格细分 (Mesh Subdivision) , 网格简化 (Mesh Simplify) 以及网格正则化 (Mesh Regularization) . 本章将会对前两个操作进行讲解. 网格正则化指的是将三角形的平面变成接近于正三角形的一种操作. 
@@ -114,11 +115,25 @@ Loop细分适用于只有三角形面的模型. 首先, 每一个三角形面上
 	\frac{3}{8}(A+B)+\frac{1}{8}(C+D)
 \end{equation}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=.15]{loop_new.png}
+	\caption{Loop细分对于新的顶点}
+	\label{fig:loop_new}
+\end{figure}
+
 对于旧顶点, 假设顶点的度为$n$, 原顶点为$O$, 周围顶点位置之和为$S$, 那么新的顶点位置是: 
 \begin{equation}
 	(1-n\cdot u)\ O+u\ S
 \end{equation}
 这里, $u=\frac{3}{8n}$. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=.15]{loop_old.png}
+	\caption{Loop细分对于旧的顶点}
+	\label{fig:loop_old}
+\end{figure}
 
 顶点的计算是一个加权平均的过程, 会使整个模型更加的平滑. 
 
@@ -161,3 +176,13 @@ Catmull-Clerk细分适用于某些面是非三角形的时候进行细分. 我�
 在模型中, 当我们进行坍缩的时候, 我们会对所有可以坍缩的点进行排序, 每一次探索误差最小的点后, 更新这个点周围的点新的误差值. 这里采用堆或者优先队列的方式进行实现. 
 
 网格简化是一种贪心算法, 我们使用局部的最优解并认为是全局最优的结果. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=.55]{QuadricErrorMetrics.png}
+	\caption{二次度量误差}
+	\label{fig:QuadricErrorMetrics}
+\end{figure}
+
+Quadric Error: New vertex should minimize its \textbf{sum of square distance} ($L2$ distance)
+to previously related triangle plane.

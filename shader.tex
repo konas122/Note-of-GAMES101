@@ -212,12 +212,16 @@ void diffuseShader(){
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=.3]{mipmap.png}
-	\caption{Mipmap对应层数计算}
+	\caption{Mipmap对应层数计算 \textit{(左图是屏幕, 右图是对应的纹理)}
+    }
 	\label{fig:mipmap}
 \end{figure}
 对于一个点$u(0,0)$何其相邻的两个点之间在纹理上的距离, 可以用微分形式表示, 那么这个像素所对应纹理方形的大小是: 
 \begin{equation}
-	L= \text{max}(\sqrt{(\frac{du}{dx})^2+(\frac{dv}{dx}^2)},\sqrt{(\frac{du}{dy}^2)+(\frac{dv}{dy}^2)})
+    \begin{aligned}
+	L&= \text{max}(\sqrt{(\frac{du}{dx})^2+(\frac{dv}{dx}^2)},\sqrt{(\frac{du}{dy}^2)+(\frac{dv}{dy}^2)}) \\
+    D&=\log_2L \\
+    \end{aligned}
 \end{equation}
 那么对应的层数为: $D=\log_2L$. 
 为了保证我们能够取到的层数是一个连续的层数, 我们使用三线性插值法得到对应的结果. 首先, 对于任意一个非整数层数, 我们在其上下两层使用双线性插值进行取值. 接下来我们在两个层之间使用线性插值就可以得到最后的结果. 
