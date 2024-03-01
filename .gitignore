@@ -8,3 +8,11 @@
 
 *synctex.gz
 TODO.md
+
+build/
+.vs/
+.idea/
+.vscode/
+
+.latexmkrc
+*.synctex*

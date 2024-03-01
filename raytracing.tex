@@ -38,6 +38,10 @@
 	\label{fig:ShadowMapping_2}
 \end{figure}
 
+
+
+
+
 \chapter{光线追踪}
 
 \section{基础知识}
@@ -274,26 +278,26 @@ $t$值可以表示为:
 不论是光栅化还是光线追踪, 都是对我们现实光照的近似表示. 因此我们提出辐射度量学通过精准的物理定义模拟光照环境, 使用更真实的方式进行光线追踪. 辐射度量学描述了Radiant flux, intensity, irraddiance以及radiance. 
 
 \section{Radiant Energy and Flux}
-\textbf{Radiant Energy}: 指的是电磁辐射的能量. 用符号$Q$表示, 单位是焦耳$J$.
+\textbf{Radiant Energy} 指的是电磁辐射的能量. 用符号$\mathbf{Q}$表示, 单位是焦耳$\mathbf{J}$.
 
-\textbf{Radiant Flux (Power) }: 指的是单位时间的能量. $\Phi=\frac{dQ}{dt}$, 单位是瓦特$W$,也可以用单位$lm$叫做流明 (lumen) . 是单位时间通过一个平面光照的量. 
+\textbf{Radiant Flux (Power) } 指的是单位时间的能量. $\Phi=\frac{dQ}{dt}$, 单位是瓦特$\mathbf{W}$,也可以用单位$\mathbf{lm}$叫做流明 (lumen) . 是单位时间通过一个平面光照的量. 
 
 \section{Radiant Intensity}
 \textbf{Radiant Intensity}指的是光源在单位立体角上的能量. 数学定义为: 
 \begin{equation}
 	I(\omega)=\frac{d\Phi}{d\omega}
-\end{equation} 单位为$W/sr$或者坎德拉$candela=cd=\frac{lm}{sr}$.
+\end{equation} 单位为$\mathbf{W}/\mathbf{sr}$或者坎德拉$\mathbf{candela}=\mathbf{cd}=\frac{\mathbf{lm}}{\mathbf{sr}}$.
 
 \subsection{单位立体角}
 在二维平面上, 我们使用弧度制定义角度, 定义为角度对应圆上的弧长除以半径: 
 \begin{equation}
 	\theta = \frac{l}{r}
-\end{equation} 单位是$rad$.整圆对应的角度为$2\pi\ rad$.
+\end{equation} 单位是$\mathbf{rad}$.整圆对应的角度为$2\pi\ \mathbf{rad}$.
 
 我们定义立体角为角度在球上对应的面积除以半径的平方: 
 \begin{equation}
 	\omega=\frac{A}{r^2}
-\end{equation} 单位是$sr$, 整球对应的立体角为$4\pi\ sr$.
+\end{equation} 单位是$\mathbf{sr}$, 整球对应的立体角为$4\pi\ \mathbf{sr}$.
 
 接下来我们推出\textbf{单位立体角 (Differential Solid Angles) }的公式: 
 \begin{figure}[H]
@@ -324,7 +328,7 @@ $t$值可以表示为:
 \textbf{Irradiance}指的是单位面积上所接收到的能量. 定义为: 
 \begin{equation}
 	E(x)=\frac{d\Phi(x)}{dA\cos\theta}
-\end{equation} 单位是$W/m^2$或者$lux=\frac{lm}{m^2}$.接收到的能量应当是和平面垂直的光线带来的能量. 如果光线和平面不垂直, 我们需要将光线投影到平面的法线上, $\theta$是光线和平面法线的夹角. 
+\end{equation} 单位是$\mathbf{W}/\mathbf{m}^2$或者$\mathbf{lux}=\frac{\mathbf{lm}}{\mathbf{m}^2}$.接收到的能量应当是和平面垂直的光线带来的能量. 如果光线和平面不垂直, 我们需要将光线投影到平面的法线上, $\theta$是光线和平面法线的夹角. 
 
 我们回顾对于光能量衰减的理解, 我们在Blinn-Phong模型中认为, 点光源能量和距离成平方反比的关系. 我们使用Irradiance来解释这个现象. 我们认为任何一个球面上的Intensity不会发生衰减, 之所以光的能量会发生衰减, 正是因为相同的立体角下对应的球面面积增加, 使得Irradiance发生变化. 因此, 点光源在某一个球面上的Irradiance和距离依然是平方反比关系. 
 
@@ -339,7 +343,7 @@ $t$值可以表示为:
 
 \begin{equation}
 	L(p,\omega)=\frac{d^2\Phi(p,\omega)}{d\omega dA\cos\theta}
-\end{equation} 单位是$W/(sr\cdot m^2)$或者$nit=\frac{lm}{sr\ m^2}=\frac{cd}{m^2}$.我们可以从两个方面来理解Radiance. 从入射角度来说, 我们认为Radiance是单位立体角下的Irradiance: 
+\end{equation} 单位是$\mathbf{W}/(\mathbf{sr}\cdot \mathbf{m}^2)$或者$\mathbf{nit}=\frac{\mathbf{lm}}{\mathbf{sr}\ \mathbf{m}^2}=\frac{\mathbf{cd}}{\mathbf{m}^2}$.我们可以从两个方面来理解Radiance. 从入射角度来说, 我们认为Radiance是单位立体角下的Irradiance: 
 \begin{equation}
 	L(p,\omega)=\frac{dE(p)}{d\omega \cos\theta}
 \end{equation}
@@ -349,7 +353,12 @@ $t$值可以表示为:
 		L(p,\omega)=\frac{dI(p,\omega)}{dA \cos\theta}
 \end{equation}
 
-那么Irradiance也可以表示为Radiance在所有角度上的积分: 
+\section{Irradiance vs. Radiance}
+\textbf{Irradiance}: 面积$dA$接收的所有能量
+
+\textbf{Radiance}: 面积$dA$从指定\enquote{方向}$d\omega$接收到的能量
+
+Irradiance也可以表示为Radiance在所有角度上的积分: 
 \begin{equation}
 	\begin{split}
 		dE(p,\omega)=L_i(p,\omega)\cos\theta d\omega\\
@@ -357,12 +366,19 @@ $t$值可以表示为:
 	\end{split}
 \end{equation}我们只对上半球做积分, 我们认为和法线方向相反的光线对这一点没有贡献. 
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=.4]{vs.png}
+	\caption{Irradiance vs. Radiance}
+	\label{fig:vs}
+\end{figure}
+
 \section{双向反射分布函数}
 \textbf{双向反射分布函数 (Bidirectional Reflectance Distribution Fuction, BRDF) }定义了一个函数来表示从某一个角度入射的光线在某一个角度上会有多少能量被反射出去. 我们将反射的过程理解为两步: 第一步, 光线入射物体得到了一部分能量; 第二步, 物体将得到的能量再一次射出去. 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=.25]{brdf.png}
+	\includegraphics[scale=.35]{brdf.png}
 	\caption{BRDF的定义}
 	\label{fig:brdf}
 \end{figure}
@@ -404,7 +420,7 @@ $t$值可以表示为:
 每一项分别代表的是: 物体直接发出的光, 光源经过一次反射的光, 光源经过两次反射得到的间接光照, ……
 
 \section{全局光照}
-全局光照指的是直接光照以及间接光照的集合. 光栅化处理的是0次项和1次项的部分, 对于高阶项比较难处理. 随着我们不断叠加不同反射次数的结果, 图片会收敛到一个亮度, 不会一直变亮
+全局光照指的是直接光照以及间接光照的集合. 光栅化处理的是0次项和1次项的部分, 对于高阶项比较难处理. 随着我们不断叠加不同反射次数的结果, 图片会收敛到一个亮度, 不会一直变亮.
 
 \chapter{蒙特卡洛路径追踪}
 
